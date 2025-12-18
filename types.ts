@@ -22,6 +22,7 @@ export interface PricingPackage {
   popular?: boolean;
 }
 
+// Added 'SEO' to fix assignment error in Portfolio component
 export type PortfolioCategory = 
   | 'All' 
   | 'Animation' 
@@ -32,6 +33,7 @@ export type PortfolioCategory =
   | 'Logo Design' 
   | 'Mobile App Development' 
   | 'Print' 
+  | 'SEO' 
   | 'Social Media' 
   | 'UX/UI' 
   | 'Web Design' 

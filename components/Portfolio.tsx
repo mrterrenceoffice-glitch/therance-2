@@ -1,14 +1,16 @@
 
 import React, { useState } from 'react';
-import { PORTFOLIO } from '../constants';
+import { PORTFOLIO, DetailedPortfolioItem } from '../constants';
 import { PortfolioCategory } from '../types';
 import { ExternalLink, Calendar } from 'lucide-react';
+import CaseStudyModal from './CaseStudyModal';
 
 const Portfolio: React.FC = () => {
   const [filter, setFilter] = useState<PortfolioCategory>('All');
+  const [selectedItem, setSelectedItem] = useState<DetailedPortfolioItem | null>(null);
   
   const categories: PortfolioCategory[] = [
-    'All', 'UX/UI', 'Branding', 'Web Development', 'Social Media', 'Logo Design'
+    'All', 'UX/UI', 'Branding', 'Web Development', 'Social Media', 'SEO'
   ];
 
   const filteredItems = filter === 'All' 
@@ -56,7 +58,8 @@ const Portfolio: React.FC = () => {
             return (
               <div 
                 key={item.id} 
-                className={`group relative overflow-hidden rounded-[2.5rem] bg-navy-dark border border-white/5 transition-all duration-500 hover:border-blue-500/30 ${spans}`}
+                onClick={() => setSelectedItem(item)}
+                className={`group relative overflow-hidden rounded-[2.5rem] bg-navy-dark border border-white/5 transition-all duration-500 hover:border-blue-500/30 cursor-pointer ${spans}`}
               >
                 <img 
                   src={item.imageUrl} 
@@ -71,8 +74,10 @@ const Portfolio: React.FC = () => {
                     <h4 className="text-2xl font-bold font-heading leading-tight">{item.title}</h4>
                   </div>
                   <div className="flex items-center space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                    <button className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-white group/btn">
-                      <span>View Case Study</span>
+                    <button 
+                      className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-white group/btn"
+                    >
+                      <span>View Detailed Case Study</span>
                       <ExternalLink className="w-3 h-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                     </button>
                   </div>
@@ -98,6 +103,14 @@ const Portfolio: React.FC = () => {
           </a>
         </div>
       </div>
+
+      {/* Case Study Modal Overlay */}
+      {selectedItem && (
+        <CaseStudyModal 
+          item={selectedItem} 
+          onClose={() => setSelectedItem(null)} 
+        />
+      )}
     </section>
   );
 };
