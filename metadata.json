@@ -1,0 +1,7 @@
+{
+  "name": "Therance Group - Digital Agency",
+  "description": "A modern, bold digital agency and business solutions website for Therance Group, specializing in creative design, web development, and South African business registration.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
