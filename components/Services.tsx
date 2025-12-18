@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Palette, Globe, Share2, Search, ArrowUpRight, Code, Video, Briefcase } from 'lucide-react';
+import { Palette, Globe, Share2, Search, ArrowUpRight, Code, Video, Briefcase, Calendar } from 'lucide-react';
 import { SERVICES } from '../constants';
 
 const IconMap: Record<string, any> = {
@@ -19,9 +18,14 @@ const Services: React.FC = () => {
             <h2 className="text-[10px] font-black text-blue-500 uppercase tracking-[0.4em] mb-4">Our Arsenal</h2>
             <h3 className="text-5xl md:text-7xl font-black font-heading tracking-tighter leading-[0.9]">Digital Weapons for <br/><span className="text-white/20">Modern Growth.</span></h3>
           </div>
-          <p className="text-gray-400 max-w-sm text-lg leading-relaxed font-light">
-            We don't just provide services. We deploy specialized units of creative and technical mastery to scale your empire.
-          </p>
+          <div className="max-w-sm">
+            <p className="text-gray-400 text-lg leading-relaxed font-light mb-6">
+              We don't just provide services. We deploy specialized units of creative and technical mastery to scale your empire.
+            </p>
+            <a href="#contact" className="inline-flex items-center text-xs font-black uppercase tracking-widest text-blue-400 hover:text-white transition-colors">
+              Request a free consultation <ArrowUpRight className="ml-2 w-4 h-4" />
+            </a>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -41,8 +45,8 @@ const Services: React.FC = () => {
                     {service.description}
                   </p>
                   <div className="mt-auto">
-                    <a href="#" className="inline-flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 group-hover:text-white transition-colors">
-                      Deploy Service <ArrowUpRight className="ml-2 w-4 h-4" />
+                    <a href="#contact" className="inline-flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 group-hover:text-white transition-colors">
+                      Book a free consultation <ArrowUpRight className="ml-2 w-4 h-4" />
                     </a>
                   </div>
                 </div>

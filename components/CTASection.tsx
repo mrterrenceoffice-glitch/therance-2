@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Send, CheckCircle2, Loader2 } from 'lucide-react';
+import { Send, CheckCircle2, Loader2, Calendar, AlertCircle } from 'lucide-react';
 
 // The specific Google Apps Script Web App URL provided by the user
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVshfF6NaGgGSZFKGLXibqMdBTxJe6NCWcEYz07n2GrpK5ETeiA01AGselva64XQXpbA/exec';
@@ -8,6 +7,7 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVshfF6NaGgG
 const CTASection: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     cell: '',
@@ -18,12 +18,13 @@ const CTASection: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSending(true);
+    setError(null);
 
     try {
       /**
        * IMPORTANT FOR GOOGLE APPS SCRIPT:
        * We use 'mode: no-cors' and 'Content-Type: text/plain' to avoid CORS pre-flight errors.
-       * The Apps Script 'doPost(e)' function can still parse this via JSON.parse(e.postData.contents).
+       * This ensures the request is sent even if the server doesn't provide permissive CORS headers.
        */
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
@@ -34,8 +35,7 @@ const CTASection: React.FC = () => {
         body: JSON.stringify(formData),
       });
       
-      // With no-cors, we won't get a readable response, but if fetch doesn't throw,
-      // it means the request was successfully sent to the Google servers.
+      // Since no-cors hides response details, we assume success if no error is thrown
       setSubmitted(true);
       setFormData({
         name: '',
@@ -43,15 +43,15 @@ const CTASection: React.FC = () => {
         email: '',
         time: 'Morning (08:00 - 12:00)'
       });
-    } catch (error) {
-      console.error('Submission failed:', error);
-      alert('Network error. Please check your internet connection or contact us at admin@therancegroup.co.za');
+    } catch (err) {
+      console.error('Submission failed:', err);
+      setError('Unable to process booking. Please try again or email admin@therancegroup.co.za');
     } finally {
       setIsSending(false);
-      // Auto-hide success message
-      setTimeout(() => {
-        if (submitted) setSubmitted(false);
-      }, 8000);
+      // Auto-hide success message after 10s
+      if (submitted) {
+        setTimeout(() => setSubmitted(false), 10000);
+      }
     }
   };
 
@@ -72,18 +72,18 @@ const CTASection: React.FC = () => {
             {/* Left Column: Text */}
             <div>
               <h2 className="text-4xl md:text-6xl font-bold font-heading mb-8 leading-tight">
-                Ready to <br />
-                <span className="text-blue-500">Scale Up?</span>
+                Initiate Your <br />
+                <span className="text-blue-500">Free Consultation.</span>
               </h2>
               <p className="text-xl text-gray-400 mb-8 font-light leading-relaxed">
-                Take the first step towards digital dominance. Fill out the form, and our lead strategist will reach out to schedule your free consultation.
+                Take the first step towards digital dominance. Fill out the form, and our lead strategist will reach out to schedule your <span className="text-white font-medium">Free 30-Minute Consultation</span>.
               </p>
               
               <div className="space-y-6">
                 {[
                   "Free Business Health Audit",
                   "Custom Growth Strategy",
-                  "Direct Access to Our Lead Developers"
+                  "Direct Expert Access"
                 ].map((item, i) => (
                   <div key={i} className="flex items-center space-x-3 text-gray-300">
                     <CheckCircle2 className="w-6 h-6 text-blue-500" />
@@ -100,17 +100,24 @@ const CTASection: React.FC = () => {
                   <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 className="w-10 h-10" />
                   </div>
-                  <h4 className="text-2xl font-bold mb-4 font-heading text-white">Message Received!</h4>
-                  <p className="text-gray-400 uppercase tracking-widest text-xs font-bold">Data successfully synced to our servers.</p>
+                  <h4 className="text-2xl font-bold mb-4 font-heading text-white">Consultation Booked!</h4>
+                  <p className="text-gray-400 uppercase tracking-widest text-xs font-bold">Expect a call from our lead strategist shortly.</p>
                   <button 
                     onClick={() => setSubmitted(false)}
                     className="mt-8 text-blue-500 text-[10px] font-black uppercase tracking-widest hover:underline"
                   >
-                    Send another message
+                    Schedule Another Session
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {error && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center space-x-3 text-red-400 text-xs animate-pulse">
+                      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                      <span>{error}</span>
+                    </div>
+                  )}
+                  
                   <div>
                     <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mb-2">Full Name & Surname</label>
                     <input 
@@ -174,12 +181,12 @@ const CTASection: React.FC = () => {
                     {isSending ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin text-blue-200" />
-                        <span className="text-blue-200">Syncing to Matrix...</span>
+                        <span className="text-blue-200 uppercase tracking-widest">Booking Consultation...</span>
                       </>
                     ) : (
                       <>
-                        <span className="text-blue-50">Launch Strategy</span>
-                        <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                        <span className="text-blue-50">Book a free consultation</span>
+                        <Calendar className="w-5 h-5 group-hover:scale-110 transition-transform" />
                       </>
                     )}
                   </button>

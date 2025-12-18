@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { PORTFOLIO } from '../constants';
 import { PortfolioCategory } from '../types';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Calendar } from 'lucide-react';
 
 const Portfolio: React.FC = () => {
   const [filter, setFilter] = useState<PortfolioCategory>('All');
@@ -88,10 +88,14 @@ const Portfolio: React.FC = () => {
           </div>
         )}
 
-        <div className="mt-20 text-center">
+        <div className="mt-20 flex flex-col md:flex-row items-center justify-center gap-6">
           <button className="px-14 py-6 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-full font-black uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 shadow-2xl">
             See the Archives
           </button>
+          <a href="#contact" className="px-14 py-6 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-black uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-blue-600/30 flex items-center gap-2">
+            <Calendar className="w-4 h-4" />
+            <span>Schedule Growth Call</span>
+          </a>
         </div>
       </div>
     </section>

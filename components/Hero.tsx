@@ -1,10 +1,55 @@
-
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { ArrowRight, Sparkles, ChevronRight } from 'lucide-react';
+
+const ParallaxButton: React.FC<{
+  children: React.ReactNode;
+  className: string;
+  href: string;
+  primary?: boolean;
+}> = ({ children, className, href, primary }) => {
+  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const buttonRef = useRef<HTMLAnchorElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!buttonRef.current) return;
+    const rect = buttonRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * 12;
+    const rotateY = ((x - centerX) / centerX) * -12;
+
+    setRotate({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setRotate({ x: 0, y: 0 });
+  };
+
+  return (
+    <a
+      ref={buttonRef}
+      href={href}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale(${rotate.x === 0 && rotate.y === 0 ? 1 : 1.05})`,
+        transition: 'transform 0.15s cubic-bezier(0.23, 1, 0.32, 1)',
+      }}
+      className={`${className} perspective-1000 will-change-transform`}
+    >
+      {children}
+      {primary && (
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      )}
+    </a>
+  );
+};
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative pt-32 pb-24 lg:pt-56 lg:pb-48 overflow-hidden">
+    <section className="relative pt-32 pb-24 lg:pt-56 lg:pb-48 overflow-hidden bg-[#000c1a]">
       {/* Background Decorative Blobs */}
       <div className="absolute top-0 -left-20 w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[140px] pointer-events-none opacity-40"></div>
       <div className="absolute bottom-0 -right-20 w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[140px] pointer-events-none opacity-40"></div>
@@ -16,7 +61,7 @@ const Hero: React.FC = () => {
             <span>Pioneering Digital Mastery</span>
           </div>
           
-          <h1 className="text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] mb-12 tracking-[-0.05em] font-heading drop-shadow-2xl">
+          <h1 className="text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] mb-12 tracking-[-0.05em] font-heading drop-shadow-2xl text-white">
             Digital<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-500 to-blue-700 animate-gradient-x">Legends.</span>
           </h1>
@@ -26,14 +71,22 @@ const Hero: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-6 mb-24">
-            <a href="#contact" className="group w-full sm:w-auto px-12 py-6 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-full transition-all flex items-center justify-center space-x-3 shadow-2xl shadow-blue-600/40 hover:-translate-y-1">
-              <span>Start Strategy</span>
+            <ParallaxButton 
+              href="#contact" 
+              primary 
+              className="group relative w-full sm:w-auto px-12 py-6 bg-blue-600 text-white font-black uppercase tracking-widest rounded-full flex items-center justify-center space-x-3 shadow-2xl shadow-blue-600/40"
+            >
+              <span>Book a free consultation</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a href="#portfolio" className="group w-full sm:w-auto px-12 py-6 bg-white/5 hover:bg-white/10 text-white font-black uppercase tracking-widest rounded-full transition-all border border-white/10 flex items-center justify-center space-x-2 backdrop-blur-sm">
-              <span>Our Work</span>
+            </ParallaxButton>
+
+            <ParallaxButton 
+              href="#portfolio" 
+              className="group w-full sm:w-auto px-12 py-6 bg-white/5 text-white font-black uppercase tracking-widest rounded-full border border-white/10 flex items-center justify-center space-x-2 backdrop-blur-sm"
+            >
+              <span>Review Our Excellence</span>
               <ChevronRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-            </a>
+            </ParallaxButton>
           </div>
 
           {/* Dynamic Trust Strip */}

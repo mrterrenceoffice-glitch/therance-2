@@ -14,8 +14,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
     { name: 'Home', href: '#' },
     { name: 'Portfolio', href: '#portfolio' },
     { name: 'About Us', href: '#about' },
-    { name: 'The Team', href: '#' },
-    { name: 'Blog', href: '#' },
+    { name: 'Pricing', href: '#pricing' },
     { name: 'Contact Us', href: '#contact' },
   ];
 
@@ -52,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
                 className="absolute top-full left-0 w-64 bg-navy-darker border border-blue-900/50 mt-2 py-4 shadow-2xl rounded-2xl animate-fade-in"
               >
                 {services.map((service) => (
-                  <a key={service} href="#" className="block px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-blue-600/20 transition-all">
+                  <a key={service} href="#services" className="block px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:bg-blue-600/20 transition-all">
                     {service}
                   </a>
                 ))}
@@ -72,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
             <Instagram className="w-4 h-4 hover:text-pink-400 cursor-pointer transition-colors" />
           </div>
           <a href="#contact" className="px-7 py-3 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full transition-all hover:scale-105 shadow-xl shadow-blue-600/30">
-            Start Project
+            Book a free consultation
           </a>
         </div>
 
@@ -98,7 +97,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
           </div>
           <div className="pt-8 border-t border-white/10">
             <a href="#contact" className="block w-full py-5 bg-blue-600 text-center rounded-2xl font-black uppercase tracking-[0.2em]" onClick={() => setMobileMenuOpen(false)}>
-              Get in Touch
+              Book a free consultation
             </a>
           </div>
         </div>

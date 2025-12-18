@@ -9,7 +9,6 @@ import Pricing from './components/Pricing';
 import SocialSection from './components/SocialSection';
 import CTASection from './components/CTASection';
 import Footer from './components/Footer';
-import AISidebar from './components/AISidebar';
 
 const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -51,8 +50,6 @@ const App: React.FC = () => {
       </main>
 
       <Footer />
-      
-      <AISidebar />
     </div>
   );
 };

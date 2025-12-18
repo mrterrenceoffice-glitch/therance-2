@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Users, Target, ShieldCheck } from 'lucide-react';
+import { Users, Target, ShieldCheck, PhoneCall, Calendar } from 'lucide-react';
 
 const About: React.FC = () => {
   return (
@@ -60,9 +59,15 @@ const About: React.FC = () => {
               </div>
             </div>
 
-            <a href="#contact" className="inline-block mt-12 px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase tracking-widest rounded-full transition-all">
-              Meet The Team
-            </a>
+            <div className="flex flex-wrap items-center gap-6 mt-12">
+              <a href="#contact" className="inline-flex items-center space-x-3 px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase tracking-widest rounded-full transition-all hover:scale-105">
+                <Calendar className="w-4 h-4" />
+                <span>Book a free consultation</span>
+              </a>
+              <a href="#contact" className="text-blue-500 text-xs font-black uppercase tracking-widest hover:text-white transition-colors">
+                Initiate Project Discovery
+              </a>
+            </div>
           </div>
         </div>
       </div>

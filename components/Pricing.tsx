@@ -1,21 +1,24 @@
-
 import React from 'react';
-import { Check } from 'lucide-react';
+import { Check, Calendar } from 'lucide-react';
 import { PRICING_PACKAGES } from '../constants';
 
 const Pricing: React.FC = () => {
   return (
-    <section className="py-24 bg-navy-darker relative">
+    <section id="pricing" className="py-24 bg-navy-darker relative">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-sm font-bold text-blue-500 uppercase tracking-[0.2em] mb-4">Launch Your Business</h2>
           <h3 className="text-4xl md:text-5xl font-bold font-heading mb-6">Business Registration Packages – South Africa</h3>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-400 max-w-2xl mx-auto mb-10">
             Professional company registration services with comprehensive compliance. Get your business ready for growth and tenders.
           </p>
+          <a href="#contact" className="inline-flex items-center space-x-3 text-blue-400 hover:text-white transition-colors font-black uppercase tracking-widest text-xs">
+            <Calendar className="w-4 h-4" />
+            <span>Schedule your free consultation</span>
+          </a>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
           {PRICING_PACKAGES.map((pkg) => (
             <div 
               key={pkg.id} 
@@ -53,15 +56,24 @@ const Pricing: React.FC = () => {
                 ))}
               </div>
 
-              <button className={`w-full py-4 rounded-full font-bold uppercase tracking-widest transition-all ${
+              <a href="#contact" className={`w-full py-4 text-center rounded-full font-bold uppercase tracking-widest transition-all ${
                 pkg.popular 
                   ? 'bg-white text-blue-600 hover:bg-gray-100' 
                   : 'bg-blue-600 text-white hover:bg-blue-700'
               }`}>
-                Choose Package
-              </button>
+                Book a consultation
+              </a>
             </div>
           ))}
+        </div>
+
+        <div className="max-w-4xl mx-auto p-12 bg-white/5 border border-white/10 rounded-[2.5rem] text-center backdrop-blur-sm">
+           <h4 className="text-2xl font-bold font-heading mb-4 italic">Unsure which package fits your 2025 goals?</h4>
+           <p className="text-gray-400 mb-8 max-w-xl mx-auto">Our consultants are ready to guide you through South African business compliance and digital scaling strategies.</p>
+           <a href="#contact" className="inline-flex items-center space-x-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-full transition-all shadow-xl shadow-blue-600/30">
+              <Calendar className="w-5 h-5" />
+              <span>Book a free consultation</span>
+           </a>
         </div>
       </div>
     </section>
