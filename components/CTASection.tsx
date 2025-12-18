@@ -1,15 +1,63 @@
 
 import React, { useState } from 'react';
-import { Send, CheckCircle2 } from 'lucide-react';
+import { Send, CheckCircle2, Loader2 } from 'lucide-react';
+
+// The specific Google Apps Script Web App URL provided by the user
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVshfF6NaGgGSZFKGLXibqMdBTxJe6NCWcEYz07n2GrpK5ETeiA01AGselva64XQXpbA/exec';
 
 const CTASection: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    cell: '',
+    email: '',
+    time: 'Morning (08:00 - 12:00)'
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate submission
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
+    setIsSending(true);
+
+    try {
+      /**
+       * IMPORTANT FOR GOOGLE APPS SCRIPT:
+       * We use 'mode: no-cors' and 'Content-Type: text/plain' to avoid CORS pre-flight errors.
+       * The Apps Script 'doPost(e)' function can still parse this via JSON.parse(e.postData.contents).
+       */
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', 
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      // With no-cors, we won't get a readable response, but if fetch doesn't throw,
+      // it means the request was successfully sent to the Google servers.
+      setSubmitted(true);
+      setFormData({
+        name: '',
+        cell: '',
+        email: '',
+        time: 'Morning (08:00 - 12:00)'
+      });
+    } catch (error) {
+      console.error('Submission failed:', error);
+      alert('Network error. Please check your internet connection or contact us at admin@therancegroup.co.za');
+    } finally {
+      setIsSending(false);
+      // Auto-hide success message
+      setTimeout(() => {
+        if (submitted) setSubmitted(false);
+      }, 8000);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -52,8 +100,14 @@ const CTASection: React.FC = () => {
                   <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 className="w-10 h-10" />
                   </div>
-                  <h4 className="text-2xl font-bold mb-4 font-heading">Message Received!</h4>
-                  <p className="text-gray-400 uppercase tracking-widest text-xs font-bold">We will be in touch shortly.</p>
+                  <h4 className="text-2xl font-bold mb-4 font-heading text-white">Message Received!</h4>
+                  <p className="text-gray-400 uppercase tracking-widest text-xs font-bold">Data successfully synced to our servers.</p>
+                  <button 
+                    onClick={() => setSubmitted(false)}
+                    className="mt-8 text-blue-500 text-[10px] font-black uppercase tracking-widest hover:underline"
+                  >
+                    Send another message
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -61,6 +115,9 @@ const CTASection: React.FC = () => {
                     <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mb-2">Full Name & Surname</label>
                     <input 
                       required
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
                       type="text" 
                       placeholder="John Doe"
                       className="w-full bg-navy-darker border border-white/10 rounded-xl px-6 py-4 focus:border-blue-500 focus:outline-none transition-colors text-white"
@@ -69,9 +126,12 @@ const CTASection: React.FC = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mb-2">Cell Number (Inc. Country Code)</label>
+                      <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mb-2">Cell Number</label>
                       <input 
                         required
+                        name="cell"
+                        value={formData.cell}
+                        onChange={handleChange}
                         type="tel" 
                         placeholder="+27 81 123 4567"
                         className="w-full bg-navy-darker border border-white/10 rounded-xl px-6 py-4 focus:border-blue-500 focus:outline-none transition-colors text-white"
@@ -81,6 +141,9 @@ const CTASection: React.FC = () => {
                       <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mb-2">Email Address</label>
                       <input 
                         required
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
                         type="email" 
                         placeholder="john@business.com"
                         className="w-full bg-navy-darker border border-white/10 rounded-xl px-6 py-4 focus:border-blue-500 focus:outline-none transition-colors text-white"
@@ -90,20 +153,35 @@ const CTASection: React.FC = () => {
 
                   <div>
                     <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mb-2">Preferable Time for Call</label>
-                    <select className="w-full bg-navy-darker border border-white/10 rounded-xl px-6 py-4 focus:border-blue-500 focus:outline-none transition-colors text-white appearance-none">
-                      <option>Morning (08:00 - 12:00)</option>
-                      <option>Afternoon (12:00 - 17:00)</option>
-                      <option>Evening (After 17:00)</option>
-                      <option>Anytime</option>
+                    <select 
+                      name="time"
+                      value={formData.time}
+                      onChange={handleChange}
+                      className="w-full bg-navy-darker border border-white/10 rounded-xl px-6 py-4 focus:border-blue-500 focus:outline-none transition-colors text-white appearance-none cursor-pointer"
+                    >
+                      <option className="bg-navy-dark">Morning (08:00 - 12:00)</option>
+                      <option className="bg-navy-dark">Afternoon (12:00 - 17:00)</option>
+                      <option className="bg-navy-dark">Evening (After 17:00)</option>
+                      <option className="bg-navy-dark">Anytime</option>
                     </select>
                   </div>
 
                   <button 
                     type="submit"
-                    className="group w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-[0.3em] rounded-xl transition-all flex items-center justify-center space-x-3 shadow-xl shadow-blue-600/20"
+                    disabled={isSending}
+                    className="group w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-[0.3em] rounded-xl transition-all flex items-center justify-center space-x-3 shadow-xl shadow-blue-600/20 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    <span>Launch Strategy</span>
-                    <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    {isSending ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin text-blue-200" />
+                        <span className="text-blue-200">Syncing to Matrix...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-blue-50">Launch Strategy</span>
+                        <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      </>
+                    )}
                   </button>
                 </form>
               )}

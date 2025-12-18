@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -10,6 +9,7 @@ import Pricing from './components/Pricing';
 import SocialSection from './components/SocialSection';
 import CTASection from './components/CTASection';
 import Footer from './components/Footer';
+import AISidebar from './components/AISidebar';
 
 const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,14 +23,16 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-navy-dark text-white selection:bg-blue-500 selection:text-white">
-      {/* Decorative Binary/Matrix Elements */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] overflow-hidden z-0 font-mono text-xs select-none">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div key={i} className="animate-matrix whitespace-nowrap" style={{ animationDelay: `${i * 0.5}s` }}>
-            ////0 10 001 01100 //// 1101 010 1010 //// 0011 1101 0010 ////
-            ////0 10 001 01100 //// 1101 010 1010 //// 0011 1101 0010 ////
-            ////0 10 001 01100 //// 1101 010 1010 //// 0011 1101 0010 ////
+    <div className="min-h-screen bg-[#000c1a] text-white selection:bg-blue-500 selection:text-white relative isolate overflow-x-hidden">
+      {/* 
+         Subtle Decorative Layer - reduced further to prevent 'flickering' or 
+         'transparency' feel which can be distracting 
+      */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.015] overflow-hidden z-0 font-mono text-[10px] select-none">
+        {Array.from({ length: 15 }).map((_, i) => (
+          <div key={i} className="animate-matrix whitespace-nowrap py-2" style={{ animationDelay: `${i * 0.8}s` }}>
+            10010110011010101010001111010010010101010111100101010101010101
+            10010110011010101010001111010010010101010111100101010101010101
           </div>
         ))}
       </div>
@@ -49,6 +51,8 @@ const App: React.FC = () => {
       </main>
 
       <Footer />
+      
+      <AISidebar />
     </div>
   );
 };

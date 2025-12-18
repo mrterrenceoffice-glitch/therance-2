@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Menu, X, ChevronDown, Facebook, Instagram } from 'lucide-react';
 import Logo from './Logo';
@@ -26,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-navy-darker/95 backdrop-blur-md py-4 shadow-2xl' : 'bg-transparent py-6'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-[#000c1a] border-b border-white/10 py-4 shadow-2xl' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Logo Section */}
         <a href="#" className="group flex items-center transition-transform hover:scale-105 active:scale-95">
@@ -84,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`fixed inset-0 bg-navy-dark z-[60] transition-transform duration-500 transform ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed inset-0 bg-[#000c1a] z-[60] transition-transform duration-500 transform ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="p-8 h-full flex flex-col">
           <div className="flex justify-between items-center mb-12">
              <Logo />
