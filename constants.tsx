@@ -90,15 +90,12 @@ export const PRICING_PACKAGES: PricingPackage[] = [
   {
     id: 'silver',
     name: 'Silver Package',
-    price: 'R1,250',
+    price: 'R1,150',
     description: 'Best suited for startups and small businesses needing basic compliance.',
     features: [
       'CIPC Company Registration',
       'BEE Certificate',
-      'Share Certificate',
-      'Tax Clearance',
-      'CSD Registration',
-      'Beneficial Ownership Registration'
+      'Share Certificate'
     ]
   },
   {
@@ -136,7 +133,7 @@ export const PRICING_PACKAGES: PricingPackage[] = [
 ];
 
 export const CLIENT_LOGOS = [
-  'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/1/15/Zoho_logo.svg',
   'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
   'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
   'https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg',
